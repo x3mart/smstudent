@@ -1,4 +1,10 @@
 from django.db import models
+import random
+import string
+from django.utils.text import slugify
+import unidecode
+from unidecode import unidecode
+import datetime
 
 class OrderStatus(models.Model):
     title = models.CharField(max_length=150, verbose_name='Название')
@@ -36,15 +42,19 @@ class Subject(models.Model):
 
 class Paper(models.Model):
     title = models.CharField(max_length=200, verbose_name='Название')
-    title_slug = models.SlugField(max_length=240)
+    slug = models.SlugField(max_length=240, unique=True, blank=True)
     description = models.TextField(verbose_name='Описание')
     price = models.FloatField(verbose_name='Цена')
     path = models.FileField(blank=True, verbose_name='Файл')
     scientific = models.ForeignKey('ScientificArea', null=True, on_delete=models.PROTECT, verbose_name='Область науки')
-    subject = models.ForeignKey('Subject', null=True, on_delete=models.PROTECT, verbose_name='Предмет')
+    subject = models.ForeignKey('Subject', blank=True, null=True, on_delete=models.PROTECT, verbose_name='Предмет')
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(unidecode(self.title) + "-" + datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
+        super(Paper, self).save(*args, **kwargs)
 
     class Meta:
         abstract = True
