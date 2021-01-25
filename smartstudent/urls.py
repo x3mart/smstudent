@@ -20,4 +20,9 @@ import debug_toolbar
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('__debug__/', include(debug_toolbar.urls)),
+    # path to djoser end points
+    path('auth/', include('djoser.urls')),
+    path('auth/', include('djoser.urls.jwt')),
+    # path to our account's app endpoints
+    # path("api/accounts/",include("accounts.urls"))
 ]
