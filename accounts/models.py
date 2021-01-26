@@ -56,7 +56,7 @@ class UserAccountManager(BaseUserManager):
 
 
     def create_student(self, email, name, password):
-        student = Author.objects.model(
+        student = Student.objects.model(
             email=email,
             name=name,
             is_student = True
@@ -70,7 +70,7 @@ class UserAccountManager(BaseUserManager):
 class UserAccount(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(max_length=255, unique=True)
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_author = models.BooleanField(default=False)
     is_student = models.BooleanField(default=False)
@@ -84,7 +84,7 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
 class Author(UserAccount):
     first_name = models.CharField(max_length=255, blank=True, verbose_name="Имя")
     last_name = models.CharField(max_length=255, blank=True, verbose_name="Фамилия")
-    birth_date = models.DateField(null=True, blank=True, verbose_name='Дата ождения')
+    birth_date = models.DateField(null=True, blank=True, verbose_name='Дата рождения')
     country = models.CharField(max_length=155, blank=True, verbose_name="Страна")
     city = models.CharField(max_length=155, blank=True, verbose_name="Город")
     university = models.CharField(max_length=255, blank=True, verbose_name="Учебное заведение")
@@ -101,3 +101,4 @@ class Author(UserAccount):
 
 class Student(UserAccount):
     pass
+    # review = models.OneToOneField('author_attrs.Portfolio', blank=True, on_delete=models.PROTECT, parent_link=True, verbose_name='Отзыв')

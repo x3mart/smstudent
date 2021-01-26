@@ -49,6 +49,7 @@ class Review(models.Model):
     body = models.TextField(verbose_name='Отзыв')
     rating = models.PositiveIntegerField(default=4, validators=[MinValueValidator(0), MaxValueValidator(5)], verbose_name='Оценка')
     release_date = models.DateField(auto_now_add=True, verbose_name='Опубликованно')
+    student = models.OneToOneField('accounts.Student', blank=True, on_delete=models.PROTECT, parent_link=True, primary_key=True, verbose_name='Отзыв')
 
     # def __str__(self):
     #     return self.pk
