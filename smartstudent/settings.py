@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'paper_attrs.apps.PaperAttrsConfig',
     'paper.apps.PaperConfig',
     'accounts.apps.AccountsConfig',
+    'shop.apps.ShopConfig',
+    'exchange.apps.ExchangeConfig',
 ]
 
 MIDDLEWARE = [

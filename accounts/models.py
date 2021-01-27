@@ -74,6 +74,7 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_author = models.BooleanField(default=False)
     is_student = models.BooleanField(default=False)
+    balance = models.FloatField(default=0, verbose_name='Денежный баланс')
 
     objects = UserAccountManager()
 
@@ -82,13 +83,13 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
 
 
 class Author(UserAccount):
-    first_name = models.CharField(max_length=255, blank=True, verbose_name="Имя")
-    last_name = models.CharField(max_length=255, blank=True, verbose_name="Фамилия")
+    first_name = models.CharField(max_length=255, null=True, blank=True, verbose_name="Имя")
+    last_name = models.CharField(max_length=255, null=True, blank=True, verbose_name="Фамилия")
     birth_date = models.DateField(null=True, blank=True, verbose_name='Дата рождения')
     country = models.CharField(max_length=155, blank=True, verbose_name="Страна")
-    city = models.CharField(max_length=155, blank=True, verbose_name="Город")
-    university = models.CharField(max_length=255, blank=True, verbose_name="Учебное заведение")
-    faculity = models.CharField(max_length=155, blank=True, verbose_name="Факультет")
+    city = models.CharField(max_length=155, null=True, blank=True, verbose_name="Город")
+    university = models.CharField(max_length=255, null=True, blank=True, verbose_name="Учебное заведение")
+    faculity = models.CharField(max_length=155, null=True, blank=True, verbose_name="Факультет")
     rating = models.PositiveIntegerField(default=0, verbose_name="Рейтинг")
     portfolio = models.ForeignKey('author_attrs.Portfolio', blank=True, null=True, on_delete=models.PROTECT, verbose_name='Портфолио')
     learning_phase = models.ForeignKey('author_attrs.LearningPhase', blank=True, null=True, on_delete=models.PROTECT, verbose_name='Стадия обучения')
@@ -100,5 +101,5 @@ class Author(UserAccount):
 
 
 class Student(UserAccount):
-    pass
+    favorite_author = models.ManyToManyField('paper_attrs.PaperType', blank=True, verbose_name='Любимый автор')
     # review = models.OneToOneField('author_attrs.Portfolio', blank=True, on_delete=models.PROTECT, parent_link=True, verbose_name='Отзыв')
